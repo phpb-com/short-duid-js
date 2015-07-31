@@ -1,3 +1,4 @@
-var short_duid = require( 'bindings' )( 'shortduid' );
+var bn = require('bn.js'),
+    hashids = require('hashids');
 
 exports.init = short_duid.ShortDUID;

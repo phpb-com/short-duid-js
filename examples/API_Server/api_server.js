@@ -2,7 +2,7 @@
 var koa = module.exports = require( 'koa' );
 var router = require( 'koa-router' )();
 var app = module.exports = koa();
-var duid = require( 'short-duid' );
+var duid = require( 'short-duid-js' );
 var cluster = require( 'cluster' );
 
 //Define app name and port for koa-cluster
