@@ -1,7 +1,7 @@
 var duid = require( '../index' );
 var test = require( "unit.js" );
 var async = require( "async" );
-var bignum = require( "bignum" );
+var bignum = require( "bn.js" );
 var _ = require('lodash');
 
 var check_duplicates = function ( arr ) {

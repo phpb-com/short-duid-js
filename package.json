@@ -15,7 +15,7 @@
     "hashids": "^1.0.2"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha --reporter spec ./test/"
+    "test": "./node_modules/mocha/bin/mocha --harmony --reporter spec ./test/"
   },
   "author": "Ian Matyssik",
   "license": "MIT",
