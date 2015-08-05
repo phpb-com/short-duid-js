@@ -1,7 +1,7 @@
 var duid = require( '../index' );
 var test = require( "unit.js" );
 var async = require( "async" );
-var bignum = require( "bignum" );
+var bignum = require( "bn.js" );
 var _ = require('lodash');
 
 var check_duplicates = function ( arr ) {
@@ -21,105 +21,6 @@ describe( 'Short DUID', function () {
 
   var duid_instance1 = new init( 123, salt, epoch_start );
   var duid_instance2 = new init( 12, salt, epoch_start );
-
-  var random_integer1 = _.random(1, 1000 * 1000);
-  var random_integer2 = _.random(1, 1000 * 1000);
-  var random_integer3 = _.random(1, 1000 * 1000);
-
-  describe( '#hashidEncode() and #hashidDecode()', function () {
-
-    it( 'should produce identical hashids from both instances for: ' + random_integer1, function () {
-      test.value( duid_instance1.hashidEncode( [ random_integer1 ] ) )
-          .isIdenticalTo( duid_instance2.hashidEncode( [ random_integer1 ] ) );
-    } );
-
-    it( 'should produce different hashids for two different integers: ' + random_integer1 + ' and ' + random_integer2, function () {
-      test.value( duid_instance1.hashidEncode( [ random_integer1 ] ) )
-          .isNotEqualTo( duid_instance1.hashidEncode( [ random_integer2 ] ) );
-    } );
-
-    it( 'decode should return same integer given output of encode as argument passed to encode: ' + random_integer3, function () {
-      test.value( duid_instance2.hashidDecode( duid_instance1.hashidEncode( [ random_integer3 ] ) )[ 0 ] )
-          .isEqualTo( random_integer3 );
-    } );
-
-    it( 'decode should return same array of integers given output of encode as argument passed to encode: ' + [ random_integer1, random_integer2, random_integer3 ], function () {
-      test.value( duid_instance2.hashidDecode( duid_instance1.hashidEncode( [ random_integer1, "" + random_integer2, random_integer3 ] ) ) )
-          .isArray()
-          .is( [ "" + random_integer1, "" + random_integer2, "" + random_integer3 ] );
-    } );
-
-    it( 'should return hashid that is equal to "LeGxr" given [123456] as argument', function () {
-      test.value( duid_instance1.hashidEncode( [ 123456 ] ) )
-          .is( 'LeGxr' );
-    } );
-
-    it( 'should return hashid that is equal to [ "123456" ] given "LeGxr" as argument', function () {
-      test.value( duid_instance2.hashidDecode( "LeGxr" ) )
-          .is( [ "123456" ] );
-    } );
-
-    it( 'should return hashid that is equal to "reG4QhO4NCpm" given [123456,7890,123] as argument', function () {
-      test.value( duid_instance1.hashidEncode( [ "123456", 7890, "123" ] ) )
-          .is( 'reG4QhO4NCpm' );
-    } );
-
-    it( 'should return hashid that is equal to [123456,7890,123] given "reG4QhO4NCpm" as argument', function () {
-      test.value( duid_instance2.hashidDecode( "reG4QhO4NCpm" ) )
-          .is( [ "123456", "7890", "123" ] );
-    } );
-
-    it( 'should return different hashids given same value and different salt', function () {
-      var duid_tmp1 = new init( 0, "salt#1", 0 );
-      var duid_tmp2 = new init( 0, "salt#2", 0 );
-      test.string( duid_tmp1.hashidEncode( [ 123456 ] ) ).isEqualTo( duid_tmp1.hashidEncode( [ 123456 ] ) );
-      test.string( duid_tmp2.hashidEncode( [ 123456 ] ) ).isEqualTo( duid_tmp2.hashidEncode( [ 123456 ] ) );
-      test.string( duid_tmp1.hashidEncode( [ 123456 ] ) ).isNotEqualTo( duid_tmp2.hashidEncode( [ 123456 ] ) );
-    } );
-
-  } );
-
-  describe( '#getRandomAPIKey()', function () {
-
-    it( 'should return random API key 64 characters long', function () {
-      test.string( duid_instance1.getRandomAPIKey() ).hasLength( 64 );
-    } );
-
-    it( 'should return random API key each time called, should not be equal', function () {
-      test.string( duid_instance1.getRandomAPIKey() )
-          .isNotEqualTo( duid_instance2.getRandomAPIKey() )
-          .isNotEqualTo( duid_instance1.getRandomAPIKey() )
-          .isNotEqualTo( duid_instance2.getRandomAPIKey() )
-          .isNotEqualTo( duid_instance1.getRandomAPIKey() )
-          .isNotEqualTo( duid_instance2.getRandomAPIKey() )
-          .isNotEqualTo( duid_instance1.getRandomAPIKey() )
-          .isNotEqualTo( duid_instance2.getRandomAPIKey() )
-          .isNotEqualTo( duid_instance1.getRandomAPIKey() )
-          .isNotEqualTo( duid_instance2.getRandomAPIKey() );
-    } );
-
-  } );
-
-  describe( '#getRandomPassword()', function () {
-
-    it( 'should return random password 16 characters long', function () {
-      test.string( duid_instance1.getRandomPassword() ).hasLength( 16 );
-    } );
-
-    it( 'should return random password each time called, should not be equal', function () {
-      test.string( duid_instance1.getRandomPassword() )
-          .isNotEqualTo( duid_instance2.getRandomPassword() )
-          .isNotEqualTo( duid_instance1.getRandomPassword() )
-          .isNotEqualTo( duid_instance2.getRandomPassword() )
-          .isNotEqualTo( duid_instance1.getRandomPassword() )
-          .isNotEqualTo( duid_instance2.getRandomPassword() )
-          .isNotEqualTo( duid_instance1.getRandomPassword() )
-          .isNotEqualTo( duid_instance2.getRandomPassword() )
-          .isNotEqualTo( duid_instance1.getRandomPassword() )
-          .isNotEqualTo( duid_instance2.getRandomPassword() );
-    } );
-
-  } );
 
   describe( '#getEpochStart()', function () {
 

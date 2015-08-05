@@ -26,6 +26,7 @@ Official repository is at <http://gotfix.com/pixnr/short-duid-js>
 - node-gyp
 
 ### Features
+- Written in pure JavaScript, no native code
 - Time and sequence based numeric unique ID generation
 - Time and sequence based alphanumeric URL-safe unique ID generation
 - Designed to be distributed among 1024 shards, no need to synchronize runtime or after setup
@@ -33,7 +34,6 @@ Official repository is at <http://gotfix.com/pixnr/short-duid-js>
 - Can generate unique IDs for 139 years without overflow or collision
 - Resilient to time drift or sequence overflow, does not delay ID generation
 - Allows to set custom epoch, prolong unique ID generation and shorten the ID
-- No runtime dependencies
 - Simple to use
 
 ### Installation
@@ -134,28 +134,6 @@ Decode previously encoded array of numbers with hashid method.
 - `hashid_string` - Hashid in a string form. Example: `3nMMYV0PvMl`
 
 ____
-##### _instance_.getRandomAPIKey(length)
-Method to return randomly generated string of URL-friendly characters that is suitable for use as an API key.
-
-###### Returns
-- `string` randomly generated string that is suitable for usage in URL and can serve as good static API key
-    - Example: `"JyJ7KqaCBD3nlU6Z0SVafM5MYAXXi29kVdAtaq87PbBFUHnWFBQ0jCdbnOQybNTs"`
-
-###### Parameters
-- `length` - Length of the random API key to return, default to 64, can be in the range from 0 to 4096.
-
-____
-##### _instance_.getRandomPassword(length)
-Method to generate and return string of random characters that are **not** URL-friendly and is mostly suitable as a temporary password.
-
-###### Returns
-- `string` randomly generated string that is suitable for usage as a temporary password and is **not** URL-friendly
-    - Example: `"*)KTRXa>z^zrSgK8"`
-
-###### Parameters
-- `length` - Length of the random password to return, default to 16, can be in the range from 0 to 1024.
-
-____
 #### Advanced API
 This API is mainly used by unit tests and should not be required for normal usage of the module. Use it at your own risk.
 
@@ -183,7 +161,7 @@ ____
 #### Example #1
 Simplest example to execute all of the major methods of the module.
 ```javascript
-var duid = require('short-duid');
+var duid = require('short-duid-js');
 var duid_instance = duid.init(0, "my salt", 0);
 console.log(duid_instance.getDUID(10));
 console.log(duid_instance.getDUIDInt(10));
@@ -264,7 +242,7 @@ pm2.connect(function() {
 var koa = require('koa');
 var router = require('koa-router')();
 var app = module.exports = koa();
-var duid = require('short-duid');
+var duid = require('short-duid-js');
 
 //Define app name and port for koa-cluster
 var cpus = require('os').cpus().length;
