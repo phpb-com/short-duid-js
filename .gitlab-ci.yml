@@ -1,5 +1,4 @@
 before_script:
-  - env
   - node -v
   - npm config set registry https://npm.gotfix.com
   - npm install
