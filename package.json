@@ -8,7 +8,8 @@
     "async": "^1.3.0",
     "mocha": "^2.2.5",
     "lodash": "^3.10.0",
-    "unit.js": "^2.0.0"
+    "unit.js": "^2.0.0",
+    "eslint": "*"
   },
   "dependencies": {
     "bn.js": "^3.1.1",
