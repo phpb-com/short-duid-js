@@ -1,7 +1,5 @@
 before_script:
-  - node -v
-  - npm config set registry https://npm.gotfix.com
-  - npm install
+  - uname -a
 
 types:
   - build
@@ -12,22 +10,50 @@ iojs-2:
   type: test
   image: gotfix/iojs:2
   script:
+  - node -v
+  - npm config set registry https://npm.gotfix.com
+  - npm config set spin false
+  - npm config set loglevel http
+  - npm install
   - npm test
-    #  - cat /proc/cpuinfo | grep "^model name" | uniq
-    #  - npm run-script bench
+  - cat /proc/cpuinfo | grep "^model name" | uniq
+  - npm run-script bench
 
 iojs-latest:
   type: test
   image: gotfix/iojs:latest
   script:
+  - node -v
+  - npm config set registry https://npm.gotfix.com
+  - npm config set spin false
+  - npm config set loglevel http
+  - npm install
   - npm test
-    #  - cat /proc/cpuinfo | grep "^model name" | uniq
-    #  - npm run-script bench
+  - cat /proc/cpuinfo | grep "^model name" | uniq
+  - npm run-script bench
 
 node12:
   type: test
   image: gotfix/node:0.12
   script:
+  - node -v
+  - npm config set registry https://npm.gotfix.com
+  - npm config set spin false
+  - npm config set loglevel http
+  - npm install
   - npm test
-    #  - cat /proc/cpuinfo | grep "^model name" | uniq
-    #  - npm run-script bench
+  - cat /proc/cpuinfo | grep "^model name" | uniq
+  - npm run-script bench
+
+node11:
+  type: test
+  image: gotfix/node:0.11
+  script:
+  - node -v
+  - npm config set registry https://npm.gotfix.com
+  - npm config set spin false
+  - npm config set loglevel http
+  - npm install
+  - npm test
+  - cat /proc/cpuinfo | grep "^model name" | uniq
+  - npm run-script bench
