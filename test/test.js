@@ -180,6 +180,15 @@ describe( 'Short DUID', function () {
     var id2 = new BN( duid_instance3.getDUIDInt( 4096 )[ 4095 ], 10 ); //Need to rollover sequence
     var curr_ms_time = new BN( duid_instance3.getCurrentTimeMs(), 10 );
 
+    it( 'should return same drift time as given as parameter', function () {
+      duid_instance3.driftTime( -123 )
+      test.number( duid_instance3.driftTime() ).isEqualTo( -123 );
+      duid_instance3.driftTime( 123 )
+      test.number( duid_instance3.driftTime() ).isEqualTo( 123 );
+      duid_instance3.driftTime( 0 )
+      test.number( duid_instance3.driftTime() ).isEqualTo( 0 );
+    } );
+
     it( 'should generate ID with ' + drift + ' millisecond drift into the past from now( ' + curr_ms_time + ' ), ' + id1 + ' should be numerically smaller than ' + id2, function () {
       test.bool( id2.cmp( id1 ) === 1 ).isTrue();
     } );
