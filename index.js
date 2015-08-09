@@ -17,7 +17,7 @@ function ShortDUID(shard_id, salt, epoch_start) {
         duid.epoch_start = new BN(0, 10);
     }
 
-    duid.time_drift = 0;
+    duid.time_drift = new BN(0, 10);
     duid.hashids = new Hashids(duid.salt);
 
     duid.sequence = new BN(0, 10);
@@ -35,7 +35,7 @@ ShortDUID.prototype.getDUID = function (count) {
 
     (count > 8192 || count < 1 ) ? cnt = 1 : cnt = count;
 
-    for(let i = 0; i < cnt; i++) {
+    for(var i = 0; i < cnt; i++) {
         ret.push(this.getID());
     }
 
@@ -51,7 +51,7 @@ ShortDUID.prototype.getDUIDInt = function (count) {
 
     (count > 8192 || count < 0 ) ? cnt = 1 : cnt = count;
 
-    for(let i = 0; i < cnt; i++) {
+    for(var i = 0; i < cnt; i++) {
         ret.push(this.getID());
     }
 
@@ -60,19 +60,16 @@ ShortDUID.prototype.getDUIDInt = function (count) {
 
 ShortDUID.prototype.getID = function () {
     var duid = this;
-    var estart = duid.epoch_start.clone();
 
     // Calculate time part
-    var now = new BN(+new Date, 10); // Current system time in milliseconds converted to BN object
-    now.isub(estart.iadd(new BN(duid.time_drift, 10))).imaskn(42); // Calculate custome epoch and add/subtract drift time
-    now.iushln(22); // Shift left by 22 bits
+    var now = new BN(+new Date, 10).sub(duid.epoch_start.add(duid.time_drift)).maskn(42).ushln(22);
 
     // Calculate shard id part
-    var shid = duid.shard_id.clone(); // Shard ID should have already been trimed to 10 bit
-    shid.iushln(12); // Shift left by 12 bit
+    var shid = duid.shard_id.ushln(12); // Shift left by 12 bit
 
     // Calculate sequence part
-    var seq = duid.sequence.iadd(new BN(1, 10)).maskn(12);
+    // var seq = duid.sequence.iadd(new BN(1, 10)).maskn(12);
+    var seq = new BN(0, 10);
 
     // Calculate final ID
     return now.or(shid.or(seq))
@@ -95,10 +92,14 @@ ShortDUID.prototype.getCurrentTimeMs = function() {
     var estart = duid.epoch_start.clone();
     var now = new BN(+new Date, 10); // Current system time in milliseconds converted to BN object
 
-    now.isub(estart.iadd(new BN(duid.time_drift, 10))).imaskn(42); // Calculate custome epoch and add/subtract drift time
+    now.isub(estart.iadd(duid.time_drift)).imaskn(42); // Calculate custome epoch and add/subtract drift time
     return now.toString(10);
 };
 
-ShortDUID.prototype.driftTime = function() {
-    return this.time_drift;
+ShortDUID.prototype.driftTime = function(drift) {
+    if(drift !== undefined) {
+        this.time_drift = new BN(drift, 10);
+    }
+
+    return this.time_drift.toString() * 1;
 };
