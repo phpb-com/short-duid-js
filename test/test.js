@@ -107,6 +107,7 @@ describe( 'Short DUID', function () {
   } );
 
   describe( '#getDUID()', function () {
+    this.timeout(5000); //hashids are not particularly fast and short-duid in js is not speedy as well
     var tests = [ {
       args: 1,
       expected: 1
