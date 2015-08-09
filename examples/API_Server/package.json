@@ -10,7 +10,7 @@
     "koa-response-time": "*",
     "koa-router": "*",
     "koa-json": "*",
-    "short-duid": "*"
+    "short-duid-js": "*"
   },
   "scripts": {
     "start": "./node_modules/koa-cluster/bin/koa-cluster api_server.js"

@@ -186,7 +186,7 @@ More complete example that will create API server with help of koajs and reply t
     "koa-router": "*",
     "koa-json": "*",
     "pm2": "*",
-    "short-duid": "*"
+    "short-duid-js": "*"
   }
 }
 ```
