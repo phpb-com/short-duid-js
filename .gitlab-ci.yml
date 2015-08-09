@@ -2,9 +2,8 @@ before_script:
   - uname -a
 
 types:
-  - build
   - test
-  - deploy
+  - release
 
 iojs-2:
   type: test
@@ -57,3 +56,13 @@ node11:
   - npm test
   - cat /proc/cpuinfo | grep "^model name" | uniq
   - npm run-script bench
+
+release:
+  type: release
+  image: gotfix/iojs:latest
+  script:
+  - npm config set registry https://registry.npmjs.com
+  - echo ${NPM_TOKEN} >> ~/.npmrc
+  - npm publish
+  only:
+  - tags
