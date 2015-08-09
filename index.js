@@ -36,7 +36,7 @@ ShortDUID.prototype.getDUID = function (count) {
     (count > 8192 || count < 1 ) ? cnt = 1 : cnt = count;
 
     for(var i = 0; i < cnt; i++) {
-        ret.push(this.getID());
+        ret.push(this.hashids.encodeHex(this.getID().toString(16)));
     }
 
     return ret;
@@ -52,7 +52,7 @@ ShortDUID.prototype.getDUIDInt = function (count) {
     (count > 8192 || count < 0 ) ? cnt = 1 : cnt = count;
 
     for(var i = 0; i < cnt; i++) {
-        ret.push(this.getID());
+        ret.push(this.getID().toString(10));
     }
 
     return ret;
@@ -62,17 +62,16 @@ ShortDUID.prototype.getID = function () {
     var duid = this;
 
     // Calculate time part
-    var now = new BN(+new Date, 10).sub(duid.epoch_start.add(duid.time_drift)).maskn(42).ushln(22);
+    var now = new BN(+new Date, 10).isub(duid.epoch_start.add(duid.time_drift)).imaskn(42).iushln(22);
 
     // Calculate shard id part
     var shid = duid.shard_id.ushln(12); // Shift left by 12 bit
 
     // Calculate sequence part
-    // var seq = duid.sequence.iadd(new BN(1, 10)).maskn(12);
-    var seq = new BN(0, 10);
+    var seq = duid.sequence.iadd(new BN(1, 10)).maskn(12);
 
     // Calculate final ID
-    return now.or(shid.or(seq))
+    return now.or(shid.or(seq));
 };
 
 ShortDUID.prototype.getShardID = function() {
