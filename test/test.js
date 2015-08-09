@@ -1,7 +1,7 @@
 var duid = require( '../index' );
 var test = require( "unit.js" );
 var async = require( "async" );
-var bignum = require( "bn.js" );
+var BN = require( "bn.js" );
 var _ = require('lodash');
 
 var check_duplicates = function ( arr ) {
@@ -72,9 +72,24 @@ describe( 'Short DUID', function () {
   describe( '#getShardID()', function () {
 
     var duid_instance_shardid_overflow = new init( 1024, salt, 0 );
+    var duid_instance_shardid_overflow_plus_one = new init( 1025, salt, 0 );
+    var duid_instance_shardid_tip = new init( 1023, salt, 0 );
+    var duid_instance_shardid_bottom = new init( 0, salt, 0 );
 
-    it( 'should overflow if shard_id is set to integer that does not fit in 10 bits: 1024 --> 0', function () {
+    it( 'should overflow if shard id is set to integer that does not fit in 10 bits: 1024 --> 0', function () {
       test.number( duid_instance_shardid_overflow.getShardID() ).is( 0 );
+    } );
+
+    it( 'should overflow if shard id is set to integer that does not fit in 10 bits: 1025 --> 1', function () {
+      test.number( duid_instance_shardid_overflow_plus_one.getShardID() ).is( 1 );
+    } );
+
+    it( 'should return set shard id for id that fits within 10 bits: 1023 --> 1023', function () {
+      test.number( duid_instance_shardid_tip.getShardID() ).is( 1023 );
+    } );
+
+    it( 'should return set shard id for id that fits within 10 bits: 0 --> 0', function () {
+      test.number( duid_instance_shardid_bottom.getShardID() ).is( 0 );
     } );
 
     it( 'should return set shard id for instance #1: 123', function () {
@@ -92,6 +107,7 @@ describe( 'Short DUID', function () {
   } );
 
   describe( '#getDUID()', function () {
+    this.timeout(5000); //hashids are not particularly fast and short-duid in js is not speedy as well
     var tests = [ {
       args: 1,
       expected: 1
@@ -160,13 +176,22 @@ describe( 'Short DUID', function () {
   describe( 'DUID with drifting time', function () {
 
     var duid_instance3 = new init( 123, salt, epoch_start );
-    var id1 = bignum( duid_instance3.getDUIDInt( 1 )[ 0 ], 10 );
+    var id1 = new BN( duid_instance3.getDUIDInt( 1 )[ 0 ], 10 );
     var drift = duid_instance3.driftTime( Math.random() * 1000 * 10 * -1 | 0 );
-    var id2 = bignum( duid_instance3.getDUIDInt( 4096 )[ 4095 ], 10 ); //Need to rollover sequence
-    var curr_ms_time = bignum( duid_instance3.getCurrentTimeMs(), 10 );
+    var id2 = new BN( duid_instance3.getDUIDInt( 4096 )[ 4095 ], 10 ); //Need to rollover sequence
+    var curr_ms_time = new BN( duid_instance3.getCurrentTimeMs(), 10 );
+
+    it( 'should return same drift time as given as parameter', function () {
+      duid_instance3.driftTime( -123 )
+      test.number( duid_instance3.driftTime() ).isEqualTo( -123 );
+      duid_instance3.driftTime( 123 )
+      test.number( duid_instance3.driftTime() ).isEqualTo( 123 );
+      duid_instance3.driftTime( 0 )
+      test.number( duid_instance3.driftTime() ).isEqualTo( 0 );
+    } );
 
     it( 'should generate ID with ' + drift + ' millisecond drift into the past from now( ' + curr_ms_time + ' ), ' + id1 + ' should be numerically smaller than ' + id2, function () {
-      test.bool( id2.gt( id1 ) ).isTrue();
+      test.bool( id2.cmp( id1 ) === 1 ).isTrue();
     } );
 
     it( 'should consistently generate unique IDs even when time is drifting backwards constantly', function () {

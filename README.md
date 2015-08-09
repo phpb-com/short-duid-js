@@ -10,34 +10,36 @@ The id is a 64bit unsigned integer with 42 bits used for current timestamp in mi
 |:---:|:---:|:---:|
 | 42bit | 10bit | 12bit |
 
-## short-duid
+## short-duid-js
 
 Official repository is at <http://gotfix.com/pixnr/short-duid-js>
 
-[![build status](https://ci.gotfix.com/projects/5/status.png?ref=master)](https://ci.gotfix.com/projects/5?ref=master)
+[![build status](https://ci.gotfix.com/projects/10/status.png?ref=master)](https://ci.gotfix.com/projects/10?ref=master)
 [![npm version](https://img.shields.io/npm/v/short-duid.svg?style=flat-square)](https://www.npmjs.com/package/short-duid-js)
 [![npm downloads](https://img.shields.io/npm/dm/short-duid.svg?style=flat-square)](https://www.npmjs.com/package/short-duid-js)
 
 ### Changelog
-- 1.0.0 (Unreleased) Initial release
+- 1.0.0 Initial release
 
 ### Requirements
 - node.js 0.11+ or iojs 2+
-- node-gyp
 
 ### Features
 - Written in pure JavaScript, no native code
 - Time and sequence based numeric unique ID generation
 - Time and sequence based alphanumeric URL-safe unique ID generation
 - Designed to be distributed among 1024 shards, no need to synchronize runtime or after setup
-- Can generate 4096 unique IDs per millisecond per shard
+- Can generate 4096 unique IDs per millisecond per shard (theoretically)
 - Can generate unique IDs for 139 years without overflow or collision
 - Resilient to time drift or sequence overflow, does not delay ID generation
 - Allows to set custom epoch, prolong unique ID generation and shorten the ID
 - Simple to use
 
+### Notes
+This module is roughly 5 times slower compared to its native implementation [https://gotfix.com/pixnr/short-duid](https://gotfix.com/pixnr/short-duid) but does not require any compilation, including dependencies. If speed is what you need, please use [short-duid](https://gotfix.com/pixnr/short-duid). Except few convenience methods, they are both API compatible and can act as a drop-in replacement for each other.
+
 ### Installation
-`npm install node-gyp -g && npm install short-duid`
+`npm install short-duid-js --save`
 
 ### How to use
 This module is very simple to use, first you will need to initialize it and then start using its instance.
@@ -165,10 +167,6 @@ var duid = require('short-duid-js');
 var duid_instance = duid.init(0, "my salt", 0);
 console.log(duid_instance.getDUID(10));
 console.log(duid_instance.getDUIDInt(10));
-console.log(duid_instance.getRandomAPIKey(32));
-console.log(duid_instance.getRandomPassword(8));
-console.log(duid_instance.hashidEncode([1234]));
-console.log(duid_instance.hashidDecode('3nMMYV0PvMl'));
 ```
 
 #### Example #2
@@ -264,18 +262,6 @@ router
       name: 'ShortDUID API'
     };
   })
-  .get('/random_api_key/:length?', function*(next) {
-    this.body = yield([duid_instance.getRandomAPIKey((this.params.length ? this.params.length : 64))]);
-  })
-  .get('/random_password/:length?', function*(next) {
-    this.body = yield([duid_instance.getRandomPassword((this.params.length ? this.params.length : 16))]);
-  })
-  .get('/hashid_decode/:id', function*(next) {
-    this.body = yield(duid_instance.hashidDecode(this.params.id));
-  })
-  .get('/hashid_encode/:id+', function*(next) {
-    this.body = yield([duid_instance.hashidEncode(this.params.id.split('/'))]);
-  })
   .get('/nduid/:count?', function*(next) {
     this.body = yield(duid_instance.getDUIDInt((this.params.count ? this.params.count : 1)));
   })
@@ -302,30 +288,17 @@ For more examples please see  `examples` folder, which I plan to keep adding to.
 So far I know of none, if you are using it in your project and do not mind sharing this information, please drop me a note at <ian@phpb.com>, and I will add you to this list.
 
 ### Testing
-`npm install node-gyp -g && git clone https://gotfix.com/pixnr/short-duid.git && cd short-duid && npm install --save-dev` <br />
-`npm test`
+`git clone https://gotfix.com/pixnr/short-duid-js.git && cd short-duid-js && npm install --save-dev` <br />
+`npm test && npm run bench`
 ```
-> ./node_modules/mocha/bin/mocha --reporter spec ./test/
+$ npm test
+
+> short-duid@1.0.0 test /builds/pixnr/short-duid-js
+> ./node_modules/mocha/bin/mocha --harmony --reporter spec ./test/
 
 
 
   Short DUID
-    #hashidEncode() and #hashidDecode()
-      ✓ should produce identical hashids from both instances for: 701098
-      ✓ should produce different hashids for two different integers: 701098 and 851606
-      ✓ decode should return same integer given output of encode as argument passed to encode: 414993
-      ✓ decode should return same array of integers given output of encode as argument passed to encode: 701098,851606,414993
-      ✓ should return hashid that is equal to "LeGxr" given [123456] as argument
-      ✓ should return hashid that is equal to [ "123456" ] given "LeGxr" as argument
-      ✓ should return hashid that is equal to "reG4QhO4NCpm" given [123456,7890,123] as argument
-      ✓ should return hashid that is equal to [123456,7890,123] given "reG4QhO4NCpm" as argument
-      ✓ should return different hashids given same value and different salt
-    #getRandomAPIKey()
-      ✓ should return random API key 64 characters long
-      ✓ should return random API key each time called, should not be equal
-    #getRandomPassword()
-      ✓ should return random password 16 characters long
-      ✓ should return random password each time called, should not be equal
     #getEpochStart()
       ✓ should return set epoch start, for instance #1: 1433116800000
       ✓ should return set epoch start, for instance #2: 1433116800000
@@ -337,31 +310,50 @@ So far I know of none, if you are using it in your project and do not mind shari
       ✓ should return set salt, for instance #2: 39622feb2b3e7aa7208f50f45ec36fd513baadad6977b53295a3b28aeaed4a54
       ✓ instance #1 and instance #2 should return same salt: 39622feb2b3e7aa7208f50f45ec36fd513baadad6977b53295a3b28aeaed4a54
     #getShardID()
+      ✓ should overflow if shard id is set to integer that does not fit in 10 bits: 1024 --> 0
+      ✓ should overflow if shard id is set to integer that does not fit in 10 bits: 1025 --> 1
+      ✓ should return set shard id for id that fits within 10 bits: 1023 --> 1023
+      ✓ should return set shard id for id that fits within 10 bits: 0 --> 0
       ✓ should return set shard id for instance #1: 123
       ✓ should return set shard id for instance #2: 12
       ✓ should return different shard ids for instance #1 and instance #2
     #getDUID()
       ✓ Asked for 1 DUIDs, correctly returns 1 DUIDs
       ✓ Asked for 0 DUIDs, correctly returns 0 DUIDs
-      ✓ Asked for 8192 DUIDs, correctly returns 8192 DUIDs
+      ✓ Asked for 8192 DUIDs, correctly returns 8192 DUIDs (467ms)
       ✓ Asked for 8193 DUIDs, correctly returns 1 DUIDs
-      ✓ should have no duplicates in the returned arrays, 8192 IDs each, and combined. (86ms)
+      ✓ should have no duplicates in the returned arrays, 8192 IDs each, and combined. (1162ms)
     #getDUIDInt()
       ✓ Asked for 1 Int DUIDs, correctly returns 1 Integer DUIDs
       ✓ Asked for 0 Int DUIDs, correctly returns 0 Integer DUIDs
-      ✓ Asked for 8192 Int DUIDs, correctly returns 8192 Integer DUIDs
+      ✓ Asked for 8192 Int DUIDs, correctly returns 8192 Integer DUIDs (423ms)
       ✓ Asked for 8193 Int DUIDs, correctly returns 1 Integer DUIDs
-      ✓ should have no duplicates in the returned arrays, 8192 IDs each, and combined. (52ms)
+      ✓ should have no duplicates in the returned arrays, 8192 IDs each, and combined. (133ms)
     DUID with drifting time
-      ✓ should generate ID with -2881 millisecond drift into the past from now( 1436495534326 ), 14171438882205696 should be numerically smaller than 14171450982772736
-      ✓ should consistently generate unique IDs even when time is drifting backwards constantly (160ms)
+      ✓ should return same drift time as given as parameter
+      ✓ should generate ID with -5890 millisecond drift into the past from now( 6012689289 ), 25219046593507329 should be numerically smaller than 25219071440564225
+      ✓ should consistently generate unique IDs even when time is drifting backwards constantly (523ms)
 
 
-  36 passing (372ms)
+  28 passing (3s)
+
+$ cat /proc/cpuinfo | grep "^model name" | uniq
+model name  : Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz
+$ npm run-script bench
+
+> short-duid@1.0.0 bench /builds/pixnr/short-duid-js
+> /usr/bin/env node benchmarks/test.js
+
+single DUIDInt generation x 212,771 ops/sec ±6.31% (84 runs sampled)
+batch of 10 DUIDInt generation x 22,137 ops/sec ±5.96% (91 runs sampled)
+single DUID generation x 21,336 ops/sec ±3.27% (92 runs sampled)
+batch of 10 DUID generation x 2,169 ops/sec ±3.11% (94 runs sampled)
+single DUID generation (1 character salt) x 21,081 ops/sec ±3.84% (95 runs sampled)
+batch of 10 DUID generation (1 character salt) x 2,118 ops/sec ±3.42% (92 runs sampled)
+
 ```
 ## TODO
-- [x] Add more tests, time drifting and sequence overflow could be done better than now
-- [x] Simplify API further
+- [ ] Improve performance, if possible
 - [ ] Improve error handling, at the moment most of them are silent and prefer overflow
 - [ ] Add more examples
 

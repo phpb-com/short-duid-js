@@ -26,18 +26,6 @@ router
       name: 'ShortDUID API'
     };
   } )
-  .get( '/random_api_key/:length?', function* ( next ) {
-    this.body = yield( [ duid_instance.getRandomAPIKey( ( this.params.length ? this.params.length : 64 ) ) ] );
-  } )
-  .get( '/random_password/:length?', function* ( next ) {
-    this.body = yield( [ duid_instance.getRandomPassword( ( this.params.length ? this.params.length : 16 ) ) ] );
-  } )
-  .get( '/hashid_decode/:id', function* ( next ) {
-    this.body = yield( duid_instance.hashidDecode( this.params.id ) );
-  } )
-  .get( '/hashid_encode/:id+', function* ( next ) {
-    this.body = yield( [ duid_instance.hashidEncode( this.params.id.split( '/' ) ) ] );
-  } )
   .get( '/nduid/:count?', function* ( next ) {
     this.body = yield( duid_instance.getDUIDInt( ( this.params.count ? this.params.count : 1 ) ) );
   } )
