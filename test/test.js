@@ -72,9 +72,24 @@ describe( 'Short DUID', function () {
   describe( '#getShardID()', function () {
 
     var duid_instance_shardid_overflow = new init( 1024, salt, 0 );
+    var duid_instance_shardid_overflow_plus_one = new init( 1025, salt, 0 );
+    var duid_instance_shardid_tip = new init( 1023, salt, 0 );
+    var duid_instance_shardid_bottom = new init( 0, salt, 0 );
 
-    it( 'should overflow if shard_id is set to integer that does not fit in 10 bits: 1024 --> 0', function () {
+    it( 'should overflow if shard id is set to integer that does not fit in 10 bits: 1024 --> 0', function () {
       test.number( duid_instance_shardid_overflow.getShardID() ).is( 0 );
+    } );
+
+    it( 'should overflow if shard id is set to integer that does not fit in 10 bits: 1025 --> 1', function () {
+      test.number( duid_instance_shardid_overflow_plus_one.getShardID() ).is( 1 );
+    } );
+
+    it( 'should return set shard id for id that fits within 10 bits: 1023 --> 1023', function () {
+      test.number( duid_instance_shardid_tip.getShardID() ).is( 1023 );
+    } );
+
+    it( 'should return set shard id for id that fits within 10 bits: 0 --> 0', function () {
+      test.number( duid_instance_shardid_bottom.getShardID() ).is( 0 );
     } );
 
     it( 'should return set shard id for instance #1: 123', function () {
