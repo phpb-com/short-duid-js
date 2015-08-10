@@ -3,6 +3,7 @@ before_script:
 
 types:
   - test
+  - mirror
   - release
 
 iojs-2:
@@ -56,6 +57,15 @@ node11:
   - npm test
   - cat /proc/cpuinfo | grep "^model name" | uniq
   - npm run-script bench
+
+github_mirror:
+  type: mirror
+  image: gotfix/alpine:latest
+  script:
+  - mkdir -p ${WORK_DIR}/mirror && cd ${WORK_DIR}/mirror
+  - git clone -q --mirror https://gotfix.com/pixnr/short-duid-js.git
+  - cd short-duid-js.git
+  - git push -q --mirror https://phpb-com:${GITHUB_TOKEN}@github.com/phpb-com/short-duid-js.git
 
 release:
   type: release
