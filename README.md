@@ -19,6 +19,7 @@ Official repository is at <http://gotfix.com/pixnr/short-duid-js>
 [![npm downloads](https://img.shields.io/npm/dm/short-duid-js.svg?style=flat-square)](https://www.npmjs.com/package/short-duid-js)
 
 ### Changelog
+- 1.0.2 Minor fixes 
 - 1.0.0 Initial release
 
 ### Requirements
@@ -71,7 +72,7 @@ Method to retrieve array of DUIDs in alphanumeric form. Length of the array is s
 
 ____
 ##### _instance_.getDUIDInt(count)
-Essential same method as `_instance_.getDUID` but insted of hashid converted integer, will return unique ID in a numeric form as string.
+Essential same method as `_instance_.getDUID` but instead of hashid converted integer, will return unique ID in a numeric form as string.
 
 ###### Returns
 - `Javascript array` object of variable length, depending on `count` parameter.
@@ -96,7 +97,7 @@ ____
 Method to get currently set custom epoch starting time in milliseconds of ShortDUID `_instance_`
 
 ###### Returns
-- `string` currently set custome epoch of ShortDUID `_instance_`, since it is unsigned 64bit integer, we return it as string.
+- `string` currently set custom epoch of ShortDUID `_instance_`, since it is unsigned 64bit integer, we return it as string.
     - Example: `"0"`
 
 ###### Parameters
@@ -156,7 +157,7 @@ Method to help simulate `system_clock` drift, can accept positive or negative in
 - `string` number of milliseconds to drift ShortDUID's internal clock
 
 ###### Parameters
-- `milliseconds` (optional) number of milliseconds to drif system_clock by, can be a positive or negative integer.
+- `milliseconds` (optional) number of milliseconds to drift system_clock by, can be a positive or negative integer.
 
 
 ____
