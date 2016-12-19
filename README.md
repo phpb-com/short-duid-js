@@ -20,6 +20,7 @@ Official repository is at <http://gotfix.com/pixnr/short-duid-js>
 [![npm downloads](https://img.shields.io/npm/dm/short-duid-js.svg?style=flat-square)](https://www.npmjs.com/package/short-duid-js)
 
 ### Changelog
+- 1.1.1 No changes to the code, fixing CI pipeline
 - 1.1.0 Major update of dependencies
 - 1.0.2 Minor fixes 
 - 1.0.0 Initial release
