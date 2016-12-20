@@ -26,7 +26,7 @@ Official repository is at <http://gotfix.com/pixnr/short-duid-js>
 - 1.0.0 Initial release
 
 ### Requirements
-- node.js 0.11+ or iojs 2+
+- node.js 0.12+ or iojs 2+
 
 ### Features
 - Written in pure JavaScript, no native code
