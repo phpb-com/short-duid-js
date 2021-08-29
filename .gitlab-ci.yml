@@ -19,11 +19,9 @@ node-latest:
   <<: *job_definition
 
 release:
-  variables:
-    NPM_TOKEN: ${NPM_TOKEN}
   type: release
   image: node:latest
   script:
-  - npm publish
+  - NPM_TOKEN=${NPM_TOKEN} npm publish --verbose
   only:
   - tags
