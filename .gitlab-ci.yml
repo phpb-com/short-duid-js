@@ -19,10 +19,11 @@ node-latest:
   <<: *job_definition
 
 release:
+  variables:
+    NPM_TOKEN: ${NPM_TOKEN}
   type: release
   image: node:latest
   script:
-  - echo ${NPM_TOKEN} > ~/.npmrc
   - npm publish
   only:
   - tags
