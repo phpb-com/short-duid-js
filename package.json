@@ -13,8 +13,8 @@
     "unit.js": "^2.0.0"
   },
   "dependencies": {
-    "bn.js": "^4.11.6",
-    "hashids": "^1.1.1"
+    "bn.js": "^5.2.0",
+    "hashids": "^2.2.8"
   },
   "scripts": {
     "bench": "/usr/bin/env node benchmarks/test.js",
