@@ -22,6 +22,7 @@ release:
   type: release
   image: node:latest
   script:
-  - NPM_TOKEN=${NPM_TOKEN} npm publish --verbose
+  - npm config set -- '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
+  - npm publish
   only:
   - tags
