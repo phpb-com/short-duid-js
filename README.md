@@ -12,21 +12,18 @@ The id is a 64bit unsigned integer with 42 bits used for current timestamp in mi
 
 ## short-duid-js
 
-Official repository is at <http://gotfix.com/pixnr/short-duid-js>
-
-[![build status](https://gotfix.com/pixnr/short-duid-js/badges/master/build.svg)](https://gotfix.com/pixnr/short-duid-js/commits/master)
-[![npm dependencies](https://david-dm.org/phpb-com/short-duid-js.svg)](https://david-dm.org/phpb-com/short-duid-js)
 [![npm version](https://img.shields.io/npm/v/short-duid-js.svg?style=flat-square)](https://www.npmjs.com/package/short-duid-js)
 [![npm downloads](https://img.shields.io/npm/dm/short-duid-js.svg?style=flat-square)](https://www.npmjs.com/package/short-duid-js)
 
 ### Changelog
+- 1.1.3 Updated dependencies
 - 1.1.1 No changes to the code, fixing CI pipeline
 - 1.1.0 Major update of dependencies
 - 1.0.2 Minor fixes 
 - 1.0.0 Initial release
 
 ### Requirements
-- node.js 0.12+ or iojs 2+
+- node.js 16.10+
 
 ### Features
 - Written in pure JavaScript, no native code
