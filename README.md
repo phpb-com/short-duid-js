@@ -16,6 +16,7 @@ The id is a 64bit unsigned integer with 42 bits used for current timestamp in mi
 [![npm downloads](https://img.shields.io/npm/dm/short-duid-js.svg?style=flat-square)](https://www.npmjs.com/package/short-duid-js)
 
 ### Changelog
+- 1.1.4 General clean-up and updates (no new functionality)
 - 1.1.3 Updated dependencies
 - 1.1.1 No changes to the code, fixing CI pipeline
 - 1.1.0 Major update of dependencies
