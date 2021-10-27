@@ -38,9 +38,6 @@ The id is a 64bit unsigned integer with 42 bits used for current timestamp in mi
 - Allows to set custom epoch, prolong unique ID generation and shorten the ID
 - Simple to use
 
-### Notes
-This module is roughly 5 times slower compared to its native implementation [https://gotfix.com/pixnr/short-duid](https://gotfix.com/pixnr/short-duid) but does not require any compilation, including dependencies. If speed is what you need, please use [short-duid](https://gotfix.com/pixnr/short-duid). Except few convenience methods, they are both API compatible and can act as a drop-in replacement for each other.
-
 ### Installation
 `npm install short-duid-js --save`
 
@@ -291,7 +288,7 @@ For more examples please see  `examples` folder, which I plan to keep adding to.
 So far I know of none, if you are using it in your project and do not mind sharing this information, please drop me a note at <ian@phpb.com>, and I will add you to this list.
 
 ### Testing
-`git clone https://gotfix.com/pixnr/short-duid-js.git && cd short-duid-js && npm install --save-dev` <br />
+`git clone https://github.com/phpb-com/short-duid-js.git && cd short-duid-js && npm install --save-dev` <br />
 `npm test && npm run bench`
 ```
 > short-duid-js@1.1.3 test
@@ -352,12 +349,11 @@ batch of 10 DUID generation (1 character salt) x 8,215 ops/sec ±23.60% (72 runs
 
 ```
 ## TODO
-- [ ] Improve performance, if possible
 - [ ] Improve error handling, at the moment most of them are silent and prefer overflow
 - [ ] Add more examples
 
 ## Contributing
-All are welcome to submit pull requests and patches
+All are welcome to submit issues, ideas, pull requests and patches
 
 ## License
 
