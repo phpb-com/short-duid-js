@@ -23,7 +23,9 @@ The id is a 64bit unsigned integer with 42 bits used for current timestamp in mi
 - 1.0.0 Initial release
 
 ### Requirements
-- node.js 16.10+
+- nodejs 12.X
+- nodejs 14.X
+- nodejs 16.X
 
 ### Features
 - Written in pure JavaScript, no native code
@@ -292,65 +294,61 @@ So far I know of none, if you are using it in your project and do not mind shari
 `git clone https://gotfix.com/pixnr/short-duid-js.git && cd short-duid-js && npm install --save-dev` <br />
 `npm test && npm run bench`
 ```
-$ npm test
-
-> short-duid@1.0.0 test /builds/pixnr/short-duid-js
+> short-duid-js@1.1.3 test
 > ./node_modules/mocha/bin/mocha --harmony --reporter spec ./test/
-
-
 
   Short DUID
     #getEpochStart()
-      ✓ should return set epoch start, for instance #1: 1433116800000
-      ✓ should return set epoch start, for instance #2: 1433116800000
-      ✓ instance #1 and instance #2 should return same epoch start: 1433116800000
-      ✓ should reset custom epoch to zero if given one larger than real epoch
-      ✓ should accept custom epoch that is even 1 millisecond in the past
+      ✔ should return set epoch start, for instance #1: 1433116800000
+      ✔ should return set epoch start, for instance #2: 1433116800000
+      ✔ instance #1 and instance #2 should return same epoch start: 1433116800000
+      ✔ should reset custom epoch to zero if given one larger than real epoch
+      ✔ should accept custom epoch that is even 1 millisecond in the past
     #getSalt()
-      ✓ should return set salt, for instance #1: 39622feb2b3e7aa7208f50f45ec36fd513baadad6977b53295a3b28aeaed4a54
-      ✓ should return set salt, for instance #2: 39622feb2b3e7aa7208f50f45ec36fd513baadad6977b53295a3b28aeaed4a54
-      ✓ instance #1 and instance #2 should return same salt: 39622feb2b3e7aa7208f50f45ec36fd513baadad6977b53295a3b28aeaed4a54
+      ✔ should return set salt, for instance #1: 39622feb2b3e7aa7208f50f45ec36fd513baadad6977b53295a3b28aeaed4a54
+      ✔ should return set salt, for instance #2: 39622feb2b3e7aa7208f50f45ec36fd513baadad6977b53295a3b28aeaed4a54
+      ✔ instance #1 and instance #2 should return same salt: 39622feb2b3e7aa7208f50f45ec36fd513baadad6977b53295a3b28aeaed4a54
     #getShardID()
-      ✓ should overflow if shard id is set to integer that does not fit in 10 bits: 1024 --> 0
-      ✓ should overflow if shard id is set to integer that does not fit in 10 bits: 1025 --> 1
-      ✓ should return set shard id for id that fits within 10 bits: 1023 --> 1023
-      ✓ should return set shard id for id that fits within 10 bits: 0 --> 0
-      ✓ should return set shard id for instance #1: 123
-      ✓ should return set shard id for instance #2: 12
-      ✓ should return different shard ids for instance #1 and instance #2
+      ✔ should overflow if shard id is set to integer that does not fit in 10 bits: 1024 --> 0
+      ✔ should overflow if shard id is set to integer that does not fit in 10 bits: 1025 --> 1
+      ✔ should return set shard id for id that fits within 10 bits: 1023 --> 1023
+      ✔ should return set shard id for id that fits within 10 bits: 0 --> 0
+      ✔ should return set shard id for instance #1: 123
+      ✔ should return set shard id for instance #2: 12
+      ✔ should return different shard ids for instance #1 and instance #2
     #getDUID()
-      ✓ Asked for 1 DUIDs, correctly returns 1 DUIDs
-      ✓ Asked for 0 DUIDs, correctly returns 0 DUIDs
-      ✓ Asked for 8192 DUIDs, correctly returns 8192 DUIDs (467ms)
-      ✓ Asked for 8193 DUIDs, correctly returns 1 DUIDs
-      ✓ should have no duplicates in the returned arrays, 8192 IDs each, and combined. (1162ms)
+      ✔ Asked for 1 DUIDs, correctly returns 1 DUIDs
+      ✔ Asked for 0 DUIDs, correctly returns 0 DUIDs
+      ✔ Asked for 8192 DUIDs, correctly returns 8192 DUIDs (164ms)
+      ✔ Asked for 8193 DUIDs, correctly returns 1 DUIDs
+      ✔ should have no duplicates in the returned arrays, 8192 IDs each, and combined. (267ms)
     #getDUIDInt()
-      ✓ Asked for 1 Int DUIDs, correctly returns 1 Integer DUIDs
-      ✓ Asked for 0 Int DUIDs, correctly returns 0 Integer DUIDs
-      ✓ Asked for 8192 Int DUIDs, correctly returns 8192 Integer DUIDs (423ms)
-      ✓ Asked for 8193 Int DUIDs, correctly returns 1 Integer DUIDs
-      ✓ should have no duplicates in the returned arrays, 8192 IDs each, and combined. (133ms)
+      ✔ Asked for 1 Int DUIDs, correctly returns 1 Integer DUIDs
+      ✔ Asked for 0 Int DUIDs, correctly returns 0 Integer DUIDs
+      ✔ Asked for 8192 Int DUIDs, correctly returns 8192 Integer DUIDs (86ms)
+      ✔ Asked for 8193 Int DUIDs, correctly returns 1 Integer DUIDs
+      ✔ should have no duplicates in the returned arrays, 8192 IDs each, and combined. (95ms)
     DUID with drifting time
-      ✓ should return same drift time as given as parameter
-      ✓ should generate ID with -5890 millisecond drift into the past from now( 6012689289 ), 25219046593507329 should be numerically smaller than 25219071440564225
-      ✓ should consistently generate unique IDs even when time is drifting backwards constantly (523ms)
+      ✔ should return same drift time as given as parameter
+      ✔ should generate ID with -1713 millisecond drift into the past from now( 202203420920 ), 848102616960839681 should be numerically smaller than 848102624363786241
+      ✔ should consistently generate unique IDs even when time is drifting backwards constantly (371ms)
 
 
-  28 passing (3s)
+  28 passing (1s)
 
-$ cat /proc/cpuinfo | grep "^model name" | uniq
-model name  : Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz
-$ npm run-script bench
 
-> short-duid@1.0.0 bench /builds/pixnr/short-duid-js
+> Executing task: npm run bench <
+
+
+> short-duid-js@1.1.3 bench
 > /usr/bin/env node benchmarks/test.js
 
-single DUIDInt generation x 212,771 ops/sec ±6.31% (84 runs sampled)
-batch of 10 DUIDInt generation x 22,137 ops/sec ±5.96% (91 runs sampled)
-single DUID generation x 21,336 ops/sec ±3.27% (92 runs sampled)
-batch of 10 DUID generation x 2,169 ops/sec ±3.11% (94 runs sampled)
-single DUID generation (1 character salt) x 21,081 ops/sec ±3.84% (95 runs sampled)
-batch of 10 DUID generation (1 character salt) x 2,118 ops/sec ±3.42% (92 runs sampled)
+single DUIDInt generation x 288,177 ops/sec ±4.59% (77 runs sampled)
+batch of 10 DUIDInt generation x 19,600 ops/sec ±11.33% (50 runs sampled)
+single DUID generation x 70,656 ops/sec ±11.10% (61 runs sampled)
+batch of 10 DUID generation x 10,967 ops/sec ±2.45% (86 runs sampled)
+single DUID generation (1 character salt) x 108,127 ops/sec ±4.77% (86 runs sampled)
+batch of 10 DUID generation (1 character salt) x 8,215 ops/sec ±23.60% (72 runs sampled)
 
 ```
 ## TODO
