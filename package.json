@@ -18,7 +18,7 @@
   },
   "scripts": {
     "bench": "/usr/bin/env node benchmarks/test.js",
-    "test": "./node_modules/mocha/bin/mocha --harmony --reporter spec ./test/"
+    "test": "npx mocha --harmony --reporter spec ./test/"
   },
   "author": "Ian Matyssik",
   "license": "MIT",

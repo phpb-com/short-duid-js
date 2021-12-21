@@ -1,17 +1,17 @@
 'use strict';
-var BN = require('bn.js'),
+const BN = require('bn.js'),
     Hashids = require('hashids');
 
 exports.init = ShortDUID;
 
 function ShortDUID(shard_id, salt, epoch_start) {
     if (!(this instanceof ShortDUID)) return new ShortDUID(shard_id, salt, epoch_start);
-    var duid = this;
+    const duid = this;
 
     duid.shard_id = new BN(shard_id, 10).maskn(10);
     duid.salt = salt;
 
-    var now = new BN(+new Date(), 10);
+    const now = new BN(+new Date(), 10);
     duid.epoch_start = new BN(epoch_start, 10);
     if(now.cmp( duid.epoch_start ) === -1) {
         duid.epoch_start = new BN(0, 10);
@@ -27,14 +27,14 @@ function ShortDUID(shard_id, salt, epoch_start) {
 };
 
 ShortDUID.prototype.getDUID = function (count) {
-    var ret = [];
-    var cnt;
+    let ret = [];
+    let cnt;
 
     if( count === 0 ) return [];
 
     (count > 8192 || count < 1 ) ? cnt = 1 : cnt = count;
 
-    for(var i = 0; i < cnt; i++) {
+    for(let i = 0; i < cnt; i++) {
         ret.push(this.hashids.encodeHex(this.getID().toString(16)));
     }
 
@@ -42,14 +42,14 @@ ShortDUID.prototype.getDUID = function (count) {
 };
 
 ShortDUID.prototype.getDUIDInt = function (count) {
-    var ret = [];
-    var cnt;
+    let ret = [];
+    let cnt;
 
     if( count === 0 ) return [];
 
     (count > 8192 || count < 0 ) ? cnt = 1 : cnt = count;
 
-    for(var i = 0; i < cnt; i++) {
+    for(let i = 0; i < cnt; i++) {
         ret.push(this.getID().toString(10));
     }
 
@@ -57,16 +57,16 @@ ShortDUID.prototype.getDUIDInt = function (count) {
 };
 
 ShortDUID.prototype.getID = function () {
-    var duid = this;
+    const duid = this;
 
     // Calculate time part
-    var now = new BN(+new Date(), 10).sub(duid.epoch_start.add(duid.time_drift)).maskn(42);
+    let now = new BN(+new Date(), 10).sub(duid.epoch_start.add(duid.time_drift)).maskn(42);
 
     // Calculate shard id part
-    var shid = duid.shard_id.ushln(12).clone(); // Shift left by 12 bit
+    const shid = duid.shard_id.ushln(12).clone(); // Shift left by 12 bit
 
     // Calculate sequence part
-    var seq = duid.sequence.iadd(new BN(1, 10)).maskn(12).clone();
+    const seq = duid.sequence.iadd(new BN(1, 10)).maskn(12).clone();
     if(duid.ts_sequence[seq] !== undefined &&
         (duid.ts_sequence[seq].cmp(now) === 0 ||
          duid.ts_sequence[seq].cmp(now) === 1)
@@ -95,9 +95,9 @@ ShortDUID.prototype.getSalt = function() {
 };
 
 ShortDUID.prototype.getCurrentTimeMs = function() {
-    var duid = this;
-    var estart = duid.epoch_start.clone();
-    var now = new BN(+new Date(), 10); // Current system time in milliseconds converted to BN object
+    const duid = this;
+    const estart = duid.epoch_start.clone();
+    let now = new BN(+new Date(), 10); // Current system time in milliseconds converted to BN object
 
     now.isub(estart).imaskn(42); // Calculate custom epoch and add/subtract drift time
     return now.toString(10);
