@@ -12,6 +12,7 @@ The id is a 64bit unsigned integer with 42 bits used for current timestamp in mi
 
 ## short-duid-js
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=phpb-com_short-duid-js&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=phpb-com_short-duid-js)
 [![npm version](https://img.shields.io/npm/v/short-duid-js.svg?style=flat-square)](https://www.npmjs.com/package/short-duid-js)
 [![npm downloads](https://img.shields.io/npm/dm/short-duid-js.svg?style=flat-square)](https://www.npmjs.com/package/short-duid-js)
 
