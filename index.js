@@ -24,37 +24,45 @@ function ShortDUID(shard_id, salt, epoch_start) {
     duid.ts_sequence = [];
 
     return duid;
-};
+}
 
 ShortDUID.prototype.getDUID = function (count) {
     let ret = [];
     let cnt;
 
-    if( count === 0 ) return [];
+    if ( count === 0 ) return [];
 
-    (count > 8192 || count < 1 ) ? cnt = 1 : cnt = count;
+    if ( count > 8192 || count < 1 ) {
+        cnt = 1;
+    } else {
+        cnt = count;
+    }
 
     for(let i = 0; i < cnt; i++) {
         ret.push(this.hashids.encodeHex(this.getID().toString(16)));
     }
 
     return ret;
-};
+}
 
 ShortDUID.prototype.getDUIDInt = function (count) {
     let ret = [];
     let cnt;
 
-    if( count === 0 ) return [];
+    if ( count === 0 ) return [];
 
-    (count > 8192 || count < 0 ) ? cnt = 1 : cnt = count;
+    if ( count > 8192 || count < 0 ) {
+        cnt = 1;
+    } else {
+        cnt = count;
+    }
 
     for(let i = 0; i < cnt; i++) {
         ret.push(this.getID().toString(10));
     }
 
     return ret;
-};
+}
 
 ShortDUID.prototype.getID = function () {
     const duid = this;
@@ -80,19 +88,19 @@ ShortDUID.prototype.getID = function () {
 
     // Calculate final ID
     return now.or(shid.or(seq));
-};
+}
 
 ShortDUID.prototype.getShardID = function() {
     return parseInt(this.shard_id.toString(10), 10);
-};
+}
 
 ShortDUID.prototype.getEpochStart = function() {
     return this.epoch_start.toString(10);
-};
+}
 
 ShortDUID.prototype.getSalt = function() {
     return this.salt;
-};
+}
 
 ShortDUID.prototype.getCurrentTimeMs = function() {
     const duid = this;
@@ -101,7 +109,7 @@ ShortDUID.prototype.getCurrentTimeMs = function() {
 
     now.isub(estart).imaskn(42); // Calculate custom epoch and add/subtract drift time
     return now.toString(10);
-};
+}
 
 ShortDUID.prototype.driftTime = function(drift) {
     if(drift !== undefined) {
@@ -109,4 +117,4 @@ ShortDUID.prototype.driftTime = function(drift) {
     }
 
     return parseInt(this.time_drift.toString(10), 10);
-};
+}
