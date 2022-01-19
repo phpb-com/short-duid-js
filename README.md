@@ -12,6 +12,7 @@ The id is a 64bit unsigned integer with 42 bits used for current timestamp in mi
 
 ## short-duid-js
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5efc6403bfcb4a1eb4560d89a68e688b)](https://app.codacy.com/gh/phpb-com/short-duid-js?utm_source=github.com&utm_medium=referral&utm_content=phpb-com/short-duid-js&utm_campaign=Badge_Grade_Settings)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=phpb-com_short-duid-js&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=phpb-com_short-duid-js)
 [![npm version](https://img.shields.io/npm/v/short-duid-js.svg?style=flat-square)](https://www.npmjs.com/package/short-duid-js)
 [![npm downloads](https://img.shields.io/npm/dm/short-duid-js.svg?style=flat-square)](https://www.npmjs.com/package/short-duid-js)
