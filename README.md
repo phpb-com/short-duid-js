@@ -224,7 +224,7 @@ console.log(duid_instance.getDUIDInt(10));
 
 #### Example #2
 
-More complete example that will create API server with help of koajs and reply to queries.
+More complete example that will create API server with help of fastify and reply to queries.
 
 ##### package.json
 
@@ -235,117 +235,60 @@ More complete example that will create API server with help of koajs and reply t
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "koa": "*",
-    "koa-bodyparser": "*",
-    "koa-response-time": "*",
-    "koa-router": "*",
-    "koa-json": "*",
-    "pm2": "*",
-    "short-duid-js": "*"
+    "fastify": "^4.0.1",
+    "short-duid-js": "^1.2.0"
+  },
+  "scripts": {
+    "start": "node api_server.js"
   }
 }
-```
-
-##### index.js
-
-```javascript
-"use strict";
-var pm2 = require("pm2");
-
-var cpus = require("os").cpus().length;
-var procs = Math.ceil(0.75 * cpus);
-
-pm2.connect(function () {
-  pm2.start(
-    {
-      name: "ShortDUID",
-      script: "api_server.js",
-      args: "",
-      post_update: ["npm install --save", " echo Launching ShortDUID"],
-      node_args: ["--harmony", "--use_strict"],
-      exec_interpreter: "node",
-      next_gen_js: false,
-      exec_mode: "cluster",
-      min_uptime: "3600s",
-      max_restarts: 25,
-      cron_restart: "",
-      instances: procs,
-      max_memory_restart: "1G",
-      error_file: "./api_errors.log",
-      out_file: "./api_info.log",
-      pid_file: "./short-duid-api.pid",
-      merge_logs: true,
-      log_date_format: "YYYY-MM-DD HH:mm:ss Z",
-      vizion: true,
-      autorestart: true,
-      port: 65000,
-      env: {
-        NODE_ENV: "production",
-        AWS_KEY: "XXX",
-        AWS_SECRET: "XXX",
-      },
-    },
-    function (err, apps) {
-      if (err) console.log("Error: ", err, "App:", apps);
-      pm2.disconnect();
-    }
-  );
-});
 ```
 
 ##### api_server.js
 
 ```javascript
 "use strict";
-var koa = require("koa");
-var router = require("koa-router")();
-var app = (module.exports = koa());
-var duid = require("short-duid-js");
+const duid = require("short-duid-js");
+const fastify = require("fastify")({
+  logger: true,
+});
 
-//Define app name and port for koa-cluster
-var cpus = require("os").cpus().length;
-app.name = "ShortDUID";
-app.node_id = 0;
-app.nid = process.env.NODE_APP_INSTANCE
-  ? process.env.NODE_APP_INSTANCE
-  : process.pid % cpus; //nodejs instance ID
-app.shard_id = app.node_id + app.nid;
-app.port = 65000;
-app.salt = "this is my super secret salt";
-app.epoch_start = 1433116800 * 1000; //Mon, 01 Jun 2015 00:00:00 GMT
+// Define ShortDUID parameters
+const shardId = 0;
+const epochStart = 1655012000n * 1000n; // Not so old unix epoch timestamp
+const salt = "this is my super secret salt";
 
-//Instantiate short-duid
-var duid_instance = new duid.init(app.shard_id, app.salt, app.epoch_start);
+// Instantiate short-duid
+const duidInstance = new duid.init(shardId, salt, epochStart);
+console.log("Node with shard_id #" + shardId + " started.");
 
-//Setup routes
-router
-  .get("/", function* (next) {
-    this.body = {
-      name: "ShortDUID API",
-    };
+// Main route
+fastify
+  .get("/", async (request, reply) => {
+    return { name: "ShortDUID API Server" };
   })
-  .get("/nduid/:count?", function* (next) {
-    this.body = yield duid_instance.getDUIDInt(
-      this.params.count ? this.params.count : 1
-    );
+  .get("/nduid/:count?", async (request, reply) => {
+    return duidInstance.getDUIDInt(request.params.count || 1);
   })
-  .get("/duid/:count?", function* (next) {
-    this.body = yield duid_instance.getDUID(
-      this.params.count ? this.params.count : 1
-    );
+  .get("/duid/:count?", async (request, reply) => {
+    return duidInstance.getDUID(request.params.count || 1);
   });
 
-//Setup middleware
-app
-  .use(require("koa-json")())
-  .use(require("koa-response-time")())
-  .use(router.routes())
-  .use(router.allowedMethods());
-
-app.listen(app.port);
+/**
+ * Run the server!
+ */
+const start = async () => {
+  try {
+    await fastify.listen({ port: 3000 });
+  } catch (err) {
+    fastify.log.error(err);
+    process.exit(1);
+  }
+};
+start();
 ```
 
-And then you should install application with `npm install --save` and start the server by `node index.js`. You can check the logs and also list the processes with `./node_modules/.bin/pm2 list`. Getting fresh id can be done by curl: `curl http://localhost:65000/duid/`.
+And then you should install application with `npm install --save` and start the server by `npm start`. Getting fresh id can be done by curl: `curl http://localhost:3000/duid/`.
 
 #### More examples
 
