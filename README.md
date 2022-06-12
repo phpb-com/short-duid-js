@@ -19,6 +19,7 @@ The id is a 64bit unsigned integer with 42 bits used for current timestamp in mi
 
 ### Changelog
 
+- 1.2.0 Depndencies' versions bumps and removed bn.js dependency
 - 1.1.6 Depndencies' versions bumps and tidyup of variables
 - 1.1.5 package.json clean-up and corrections
 - 1.1.4 General clean-up and updates (no new functionality)
@@ -360,8 +361,10 @@ So far I know of none, if you are using it in your project and do not mind shari
 `npm test && npm run bench`
 
 ```
-> short-duid-js@1.1.3 test
-> ./node_modules/mocha/bin/mocha --harmony --reporter spec ./test/
+> short-duid-js@1.2.0 test
+> npx mocha --harmony --reporter spec ./test/
+
+
 
   Short DUID
     #getEpochStart()
@@ -385,37 +388,33 @@ So far I know of none, if you are using it in your project and do not mind shari
     #getDUID()
       ✔ Asked for 1 DUIDs, correctly returns 1 DUIDs
       ✔ Asked for 0 DUIDs, correctly returns 0 DUIDs
-      ✔ Asked for 8192 DUIDs, correctly returns 8192 DUIDs (164ms)
+      ✔ Asked for 8192 DUIDs, correctly returns 8192 DUIDs
       ✔ Asked for 8193 DUIDs, correctly returns 1 DUIDs
-      ✔ should have no duplicates in the returned arrays, 8192 IDs each, and combined. (267ms)
+      ✔ should have no duplicates in the returned arrays, 8192 IDs each, and combined. (96ms)
     #getDUIDInt()
       ✔ Asked for 1 Int DUIDs, correctly returns 1 Integer DUIDs
       ✔ Asked for 0 Int DUIDs, correctly returns 0 Integer DUIDs
-      ✔ Asked for 8192 Int DUIDs, correctly returns 8192 Integer DUIDs (86ms)
+      ✔ Asked for 8192 Int DUIDs, correctly returns 8192 Integer DUIDs
       ✔ Asked for 8193 Int DUIDs, correctly returns 1 Integer DUIDs
-      ✔ should have no duplicates in the returned arrays, 8192 IDs each, and combined. (95ms)
+      ✔ should have no duplicates in the returned arrays, 8192 IDs each, and combined.
     DUID with drifting time
       ✔ should return same drift time as given as parameter
-      ✔ should generate ID with -1713 millisecond drift into the past from now( 202203420920 ), 848102616960839681 should be numerically smaller than 848102624363786241
-      ✔ should consistently generate unique IDs even when time is drifting backwards constantly (371ms)
+      ✔ should generate ID with -7851 millisecond drift into the past from now( 221886083479 ), 930657687468224513 should be numerically smaller than 930657720410288129
+      ✔ should consistently generate unique IDs even when time is drifting backwards constantly (68ms)
 
 
-  28 passing (1s)
+  28 passing (258ms)
 
 
-> Executing task: npm run bench <
-
-
-> short-duid-js@1.1.3 bench
+> short-duid-js@1.2.0 bench
 > /usr/bin/env node benchmarks/test.js
 
-single DUIDInt generation x 288,177 ops/sec ±4.59% (77 runs sampled)
-batch of 10 DUIDInt generation x 19,600 ops/sec ±11.33% (50 runs sampled)
-single DUID generation x 70,656 ops/sec ±11.10% (61 runs sampled)
-batch of 10 DUID generation x 10,967 ops/sec ±2.45% (86 runs sampled)
-single DUID generation (1 character salt) x 108,127 ops/sec ±4.77% (86 runs sampled)
-batch of 10 DUID generation (1 character salt) x 8,215 ops/sec ±23.60% (72 runs sampled)
-
+single DUIDInt generation x 1,950,543 ops/sec ±0.66% (90 runs sampled)
+batch of 10 DUIDInt generation x 204,988 ops/sec ±4.84% (96 runs sampled)
+single DUID generation x 316,785 ops/sec ±8.43% (90 runs sampled)
+batch of 10 DUID generation x 34,976 ops/sec ±0.23% (101 runs sampled)
+single DUID generation (1 character salt) x 347,631 ops/sec ±0.28% (96 runs sampled)
+batch of 10 DUID generation (1 character salt) x 34,766 ops/sec ±0.34% (97 runs sampled)
 ```
 
 ## TODO
