@@ -1,3 +1,5 @@
+/*eslint no-undef: "error"*/
+/*eslint-env node*/
 'use strict';
 const Hashids = require('hashids');
 
@@ -7,20 +9,20 @@ function ShortDUID(shard_id, salt, epoch_start) {
     if (!(this instanceof ShortDUID)) return new ShortDUID(shard_id, salt, epoch_start);
     const duid = this;
 
-    duid.shard_id = BigInt(shard_id) & ((1n << 10n) - 1n);
+    duid.shardId = BigInt(shard_id) & ((1n << 10n) - 1n);
     duid.salt = salt;
 
     const now = BigInt(+new Date());
-    duid.epoch_start = BigInt(epoch_start);
-    if (now < duid.epoch_start) {
-        duid.epoch_start = 0n;
+    duid.epochStart = BigInt(epoch_start);
+    if (now < duid.epochStart) {
+        duid.epochStart = 0n;
     }
 
-    duid.time_drift = 0n;
+    duid.timeDrift = 0n;
     duid.hashids = new Hashids(duid.salt);
 
     duid.sequence = 0n;
-    duid.ts_sequence = [];
+    duid.tsSequence = [];
 
     return duid;
 }
@@ -67,19 +69,19 @@ ShortDUID.prototype.getID = function () {
     const duid = this;
 
     // Calculate time part
-    let now = (BigInt(+new Date()) - (duid.epoch_start + duid.time_drift)) & ((1n << 42n) - 1n);
+    let now = (BigInt(+new Date()) - (duid.epochStart + duid.timeDrift)) & ((1n << 42n) - 1n);
 
     // Calculate shard id part
-    const shid = duid.shard_id << 12n; // Shift left by 12 bit
+    const shid = duid.shardId << 12n; // Shift left by 12 bit
 
     // Calculate sequence part
     const seq = (++duid.sequence & ((1n << 12n) - 1n));
-    if (duid.ts_sequence[seq] !== undefined
-        && duid.ts_sequence[seq] >= now) { // Overflowing or drifting backwards
-        now = duid.ts_sequence[seq] + 1n;
+    if (typeof duid.tsSequence[seq] === "undefined"
+        && duid.tsSequence[seq] >= now) { // Overflowing or drifting backwards
+        now = duid.tsSequence[seq] + 1n;
         now &= ((1n << 42n) - 1n);
     }
-    duid.ts_sequence[seq] = now;
+    duid.tsSequence[seq] = now;
     now <<= 22n;
 
     // Calculate final ID
@@ -87,11 +89,11 @@ ShortDUID.prototype.getID = function () {
 }
 
 ShortDUID.prototype.getShardID = function () {
-    return parseInt(this.shard_id.toString(10), 10);
+    return parseInt(this.shardId.toString(10), 10);
 }
 
 ShortDUID.prototype.getEpochStart = function () {
-    return this.epoch_start.toString(10);
+    return this.epochStart.toString(10);
 }
 
 ShortDUID.prototype.getSalt = function () {
@@ -100,7 +102,7 @@ ShortDUID.prototype.getSalt = function () {
 
 ShortDUID.prototype.getCurrentTimeMs = function () {
     const duid = this;
-    const estart = duid.epoch_start;
+    const estart = duid.epochStart;
     let now = BigInt(+new Date()); // Current system time in milliseconds
 
     now -= estart; // Calculate custom epoch and add/subtract drift time
@@ -110,8 +112,8 @@ ShortDUID.prototype.getCurrentTimeMs = function () {
 
 ShortDUID.prototype.driftTime = function (drift) {
     if (drift !== undefined) {
-        this.time_drift = BigInt(Math.round(drift,0));
+        this.timeDrift = BigInt(Math.round(drift, 0));
     }
 
-    return parseInt(this.time_drift.toString(10), 10);
+    return parseInt(this.timeDrift.toString(10), 10);
 }
