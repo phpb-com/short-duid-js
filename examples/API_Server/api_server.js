@@ -15,7 +15,7 @@ console.log('Node with shard_id #' + shardId + ' started.')
 
 // Main route
 fastify.get('/', async (request, reply) => {
-  return { name: 'ShortDUID API Server' }
+  return ({ name: 'ShortDUID API Server' })
 })
   .get('/nduid/:count?', async (request, reply) => {
     return (duidInstance.getDUIDInt((request.params.count || 1)))
