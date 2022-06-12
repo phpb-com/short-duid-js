@@ -1,41 +1,38 @@
 'use strict'
-const koa = module.exports = require('koa')
-const router = require('koa-router')()
-const app = module.exports = koa()
 const duid = require('short-duid-js')
-const cluster = require('cluster')
+const fastify = require('fastify')({
+  logger: true
+})
 
-// Define app name and port for koa-cluster
-const cpus = require('os').cpus().length
-app.name = 'ShortDUID'
-app.node_id = 0
-app.nid = process.env.NODE_APP_INSTANCE ? process.env.NODE_APP_INSTANCE : (cluster.worker.id ? cluster.worker.id : (process.pid % cpus)) // nodejs instance ID
-app.shard_id = app.node_id + app.nid
-app.port = 45000
-app.salt = 'this is my super secret salt'
-app.epoch_start = 1433116800 * 1000 // Mon, 01 Jun 2015 00:00:00 GMT
+// Define ShortDUID parameters
+const shardId = 0 
+const epochStart = 1655012000n * 1000n // Not so old unix epoch timestamp
+const salt = 'this is my super secret salt'
 
 // Instantiate short-duid
-const duid_instance = new duid.init(app.shard_id, app.salt, app.epoch_start)
-console.log('Node with shard_id #' + app.shard_id + ' started.')
+const duidInstance = new duid.init(shardId, salt, epochStart)
+console.log('Node with shard_id #' + shardId + ' started.')
 
-// Setup routes
-router
-  .get('/', function * (next) {
-    this.body = {
-      name: 'ShortDUID API'
-    }
-  })
-  .get('/nduid/:count?', function * (next) {
-    this.body = yield (duid_instance.getDUIDInt((this.params.count ? this.params.count : 1)))
-  })
-  .get('/duid/:count?', function * (next) {
-    this.body = yield (duid_instance.getDUID((this.params.count ? this.params.count : 1)))
-  })
+// Main route
+fastify.get('/', async (request, reply) => {
+  return { name: 'ShortDUID API Server' }
+})
+.get('/nduid/:count?', async (request, reply) => {
+  return (duidInstance.getDUIDInt((request.params.count || 1)))
+})
+.get('/duid/:count?', async (request, reply) => {
+  return (duidInstance.getDUID((request.params.count || 1)))
+})
 
-// Setup middleware
-app
-  .use(require('koa-json')())
-  .use(require('koa-response-time')())
-  .use(router.routes())
-  .use(router.allowedMethods())
+/**
+ * Run the server!
+ */
+const start = async () => {
+  try {
+    await fastify.listen({ port: 3000 })
+  } catch (err) {
+    fastify.log.error(err)
+    process.exit(1)
+  }
+}
+start()

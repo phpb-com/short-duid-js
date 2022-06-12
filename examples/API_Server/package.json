@@ -4,15 +4,10 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "koa": "*",
-    "koa-cluster": "*",
-    "koa-bodyparser": "*",
-    "koa-response-time": "*",
-    "koa-router": "*",
-    "koa-json": "*",
-    "short-duid-js": "*"
+    "fastify": "^4.0.1",
+    "short-duid-js": "^1.2.0"
   },
   "scripts": {
-    "start": "./node_modules/koa-cluster/bin/koa-cluster api_server.js"
+    "start": "node api_server.js"
   }
 }
