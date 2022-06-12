@@ -27,8 +27,8 @@
     "bench": "/usr/bin/env node benchmarks/test.js",
     "test": "npx mocha --harmony --reporter spec ./test/",
     "lint": "eslint ./index.js",
-    "lint:fix": "eslint ./index.js --fix",
-    "format": "prettier --write",
+    "lint:fix": "eslint ./ --fix",
+    "format": "prettier --write .",
     "prepare": "husky install"
   },
   "lint-staged": {

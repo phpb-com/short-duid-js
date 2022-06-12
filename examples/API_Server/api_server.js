@@ -5,7 +5,7 @@ const fastify = require('fastify')({
 })
 
 // Define ShortDUID parameters
-const shardId = 0 
+const shardId = 0
 const epochStart = 1655012000n * 1000n // Not so old unix epoch timestamp
 const salt = 'this is my super secret salt'
 
@@ -17,12 +17,12 @@ console.log('Node with shard_id #' + shardId + ' started.')
 fastify.get('/', async (request, reply) => {
   return { name: 'ShortDUID API Server' }
 })
-.get('/nduid/:count?', async (request, reply) => {
-  return (duidInstance.getDUIDInt((request.params.count || 1)))
-})
-.get('/duid/:count?', async (request, reply) => {
-  return (duidInstance.getDUID((request.params.count || 1)))
-})
+  .get('/nduid/:count?', async (request, reply) => {
+    return (duidInstance.getDUIDInt((request.params.count || 1)))
+  })
+  .get('/duid/:count?', async (request, reply) => {
+    return (duidInstance.getDUID((request.params.count || 1)))
+  })
 
 /**
  * Run the server!
