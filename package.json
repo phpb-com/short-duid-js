@@ -5,7 +5,6 @@
   "description": "Distributed URL safe short ID generator.",
   "main": "index.js",
   "devDependencies": {
-    "async": "^3.2.1",
     "benchmark": "^2.1.4",
     "lodash": "^4.17.21",
     "microtime-nodejs": "^1.0.0",
