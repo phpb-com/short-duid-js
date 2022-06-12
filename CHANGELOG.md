@@ -1,8 +1,9 @@
+- 1.2.0 Depndencies' versions bumps and removed bn.js dependency
 - 1.1.6 Depndencies' versions bumps and tidyup of variables
 - 1.1.5 package.json clean-up and corrections
 - 1.1.4 General clean-up and updates (no new functionality)
 - 1.1.3 Updated dependencies
 - 1.1.1 No changes to the code, fixing CI pipeline
 - 1.1.0 Major update of dependencies
-- 1.0.2 Minor fixes 
+- 1.0.2 Minor fixes
 - 1.0.0 Initial release
