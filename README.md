@@ -298,6 +298,8 @@ For more examples please see `examples` folder, which I plan to keep adding to. 
 
 So far I know of none, if you are using it in your project and do not mind sharing this information, please drop me a note at <ian@phpb.com>, and I will add you to this list.
 
+- [DOSID](https://github.com/phpb-com/dosid) - is a sister project that implements similar ID generation mechanism but on top of Cloudflare edge network.
+
 ### Testing
 
 `git clone https://github.com/phpb-com/short-duid-js.git && cd short-duid-js && npm install --save-dev` <br />
