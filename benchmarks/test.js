@@ -3,8 +3,8 @@ const ShortDUID = require('../.')
 
 const suit = new Benchmark.Suite()
 
-const duid = ShortDUID.init(0, 'b130389689f522fa8b6664eb291083551ff0c00a4cf5a4905fdee8cd9063e55a', 1433116800000)
-const duid_small_salt = ShortDUID.init(0, 'a', 1433116800000)
+const duid = new ShortDUID.init(0, 'b130389689f522fa8b6664eb291083551ff0c00a4cf5a4905fdee8cd9063e55a', 1433116800000)
+const duid_small_salt = new ShortDUID.init(0, 'a', 1433116800000)
 
 suit.add('single DUIDInt generation', function () {
   duid.getDUIDInt(1)
