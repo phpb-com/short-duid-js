@@ -1,3 +1,4 @@
+- 1.2.1 Bugfix for the drifting time, and optimizations
 - 1.2.0 Depndencies' versions bumps and removed bn.js dependency
 - 1.1.6 Depndencies' versions bumps and tidyup of variables
 - 1.1.5 package.json clean-up and corrections

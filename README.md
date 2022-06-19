@@ -19,6 +19,7 @@ The id is a 64bit unsigned integer with 42 bits used for current timestamp in mi
 
 ### Changelog
 
+- 1.2.1 Bugfix for the drifting time, and optimizations
 - 1.2.0 Depndencies' versions bumps and removed bn.js dependency
 - 1.1.6 Depndencies' versions bumps and tidyup of variables
 - 1.1.5 package.json clean-up and corrections
@@ -34,6 +35,7 @@ The id is a 64bit unsigned integer with 42 bits used for current timestamp in mi
 - nodejs 12.X
 - nodejs 14.X
 - nodejs 16.X
+- nodejs 18.X
 
 ### Features
 
