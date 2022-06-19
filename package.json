@@ -1,6 +1,6 @@
 {
   "name": "short-duid-js",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "url": "https://gotfix.com/pixnr/short-duid-js.git",
   "description": "Distributed URL safe short ID generator.",
   "main": "index.js",
