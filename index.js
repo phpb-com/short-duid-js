@@ -120,7 +120,7 @@ class ShortDUID {
 
   driftTime (drift) {
     if (typeof drift !== 'undefined') {
-      this.timeDrift = BigInt(Math.round(drift, 0))
+      this.timeDrift = BigInt(Math.round(drift))
     }
 
     return parseInt(this.timeDrift.toString(), 10)
