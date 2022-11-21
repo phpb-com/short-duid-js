@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "fastify": "^4.8.1",
+    "fastify": "^4.10.2",
     "short-duid-js": "^1.2.0"
   },
   "scripts": {
