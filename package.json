@@ -16,7 +16,7 @@
     "lint-staged": "15.2.2",
     "lodash": "4.17.21",
     "microtime-nodejs": "1.0.0",
-    "mocha": "10.3.0",
+    "mocha": "10.4.0",
     "prettier": "3.2.5",
     "unit.js": "2.1.1"
   },
